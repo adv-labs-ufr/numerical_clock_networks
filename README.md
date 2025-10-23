@@ -76,7 +76,7 @@ This plan should be stored under:
    - What are the epistemic limits of measuring time itself?
 
 End your plan with a **succinct research goal statement**, for example:
-> *We will simulate and benchmark three clocks — one atomic, one mechanical, one astronomical — to test how phase correlations can reveal network consistency even without an absolute reference.*
+> *We will simulate and benchmark three atomic clocks with different noise features to test how phase correlations can reveal network consistency even without an absolute reference.*
 
 ---
 
@@ -139,8 +139,10 @@ Each contribution becomes part of a growing, open scientific record on time and 
 
 ---
 
-## 📚 References
+## 📚 References 
+(see also: https://ilias.uni-freiburg.de/ilias.php?baseClass=ilrepositorygui&ref_id=4040995)
 
+- **Fritz Riehle**, *Frequency Standards: Basics and Applications*, Wiley‐VCH Verlag GmbH & Co. KGaA, 2003.
 - **M. A. Lombardi**, *NIST Time and Frequency Services*, NIST SP 250-89.  
 - **W. J. Riley**, *Handbook of Frequency Stability Analysis*, NIST SP 1065.  
 - **D. W. Allan, N. Ashby, C. C. Hodge**, *The Science of Timekeeping*, HP Application Note 1289.  
