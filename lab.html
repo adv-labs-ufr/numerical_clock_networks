@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab &mdash; Numerical Clock Networks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">Clock Networks Lab</a>
+  <div class="nav-links"><a href="index.html">Overview</a> <a href="framework.html">Framework</a> <a href="tutorial.html">Tutorial</a> <a href="lab.html" class="active">Lab</a> <a href="rulebook.html">Rulebook</a></div>
+</nav>
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Lab</h1>
+    <div class="subtitle">Clock Network Simulations</div>
+    <div class="meta">Research plan &middot; Numerical experiments &middot; Benchmarking &middot; Synthesis</div>
+  </div>
+</div>
+<div class="container">
+
+<p>This page defines the research programme for the lab. You will simulate clock networks of increasing complexity, benchmark them within both frequentist and Bayesian frameworks, and interpret your results through the causal-geometry lens. Each lab block builds on the previous; record everything in your lab notes as you go.</p>
+
+<div class="callout callout-danger"><strong>Lab hours:</strong> 9:00&ndash;17:30 h. Coordinate details with your tutors. See the <a href="rulebook.html">Rulebook</a> for step definitions, assessment criteria, and deadlines.</div>
+
+<!-- ═══════ BLOCK 1 ═══════ -->
+
+<div class="part-divider" id="block-1">
+<h2>Block 1: Single-Clock Characterisation</h2>
+<p>Establish numerical foundations and validate against tutorial results</p>
+</div>
+
+<h3>1.1 Research Question</h3>
+<p>Given an oscillator with a specified noise model, can you fully characterise its stability using both frequentist and Bayesian methods, and do the two approaches agree?</p>
+
+<h3>1.2 Tasks</h3>
+
+<h4>Frequentist Characterisation</h4>
+<ul>
+  <li>Simulate a single oscillator with a composite noise model: white frequency + flicker frequency + random-walk frequency. Choose physically motivated amplitudes (document your choices).</li>
+  <li>Compute the Allan deviation &sigma;<sub>y</sub>(&tau;) over at least four decades of &tau;. Identify the three noise regimes from the slope.</li>
+  <li>Compute the modified Allan deviation. Confirm that it resolves white phase from flicker phase (add white phase noise to test this).</li>
+  <li>Estimate confidence intervals on &sigma;<sub>y</sub>(&tau;) using chi-squared statistics (see Riley, NIST SP 1065, &sect;5).</li>
+</ul>
+
+<h4>Bayesian Characterisation</h4>
+<ul>
+  <li>Parametrise the noise model as h = (h<sub>&minus;2</sub>, h<sub>&minus;1</sub>, h<sub>0</sub>). Define priors for each amplitude.</li>
+  <li>Run MCMC to estimate the posterior p(h | data). Report posterior medians and 95% credible intervals.</li>
+  <li>Perform posterior predictive checks: generate synthetic Allan deviation curves from the posterior and compare to the observed curve.</li>
+  <li>Test model selection: compare a two-component model (white + flicker) against the full three-component model using the Bayes factor.</li>
+</ul>
+
+<h4>Cross-Validation</h4>
+<ul>
+  <li>Do the frequentist confidence intervals and Bayesian credible intervals overlap? Where do they diverge? Explain.</li>
+  <li>Record all results, code, and reasoning in your lab notes.</li>
+</ul>
+
+<div class="callout callout-warning"><strong>In-lab analysis:</strong> Plot your Allan deviation as the simulation runs. If the slope does not match the injected noise type, stop and debug before proceeding. See <a href="rulebook.html#step2">Rulebook Step 2</a>.</div>
+
+<!-- ═══════ BLOCK 2 ═══════ -->
+
+<div class="part-divider" id="block-2">
+<h2>Block 2: Pairwise Comparison and the &eta; Parameter</h2>
+<p>Two clocks, one link &mdash; where is &eta;<sub>opt</sub>?</p>
+</div>
+
+<h3>2.1 Research Question</h3>
+<p>For two clocks separated by a comparison link with its own noise, does the predicted &eta;<sub>opt</sub> from Exercise D.4.2 match the simulated optimum?</p>
+
+<h3>2.2 Tasks</h3>
+
+<h4>Simulation</h4>
+<ul>
+  <li>Simulate two independent clocks with identical noise models from Block&nbsp;1.</li>
+  <li>Model the comparison link: add white phase noise with amplitude h<sub>2,link</sub> representing propagation and detection noise.</li>
+  <li>Compute the comparison time series y<sub>AB</sub>(t) = y<sub>A</sub>(t) &minus; y<sub>B</sub>(t) + y<sub>link</sub>(t).</li>
+  <li>Compute &sigma;<sub>AB</sub>(&tau;) and identify &tau;<sub>opt</sub> &mdash; the minimum of the total comparison instability.</li>
+</ul>
+
+<h4>The &eta; Landscape</h4>
+<ul>
+  <li>Define a range of comparison distances L<sub>comparison</sub> (e.g. 1&nbsp;m to 10<sup>8</sup>&nbsp;m).</li>
+  <li>For each L, compute &eta;<sub>opt</sub> = L/(c&tau;<sub>opt</sub>).</li>
+  <li>Plot &eta;<sub>opt</sub> vs L<sub>comparison</sub> and compare to the analytic prediction.</li>
+  <li>Introduce asymmetric noise (different clocks) and repeat. How does &eta;<sub>opt</sub> shift?</li>
+</ul>
+
+<h4>Bayesian Extension</h4>
+<ul>
+  <li>From the comparison time series, perform Bayesian inference on the link noise amplitude h<sub>2,link</sub> treating the clock noise as known (from Block&nbsp;1 posterior).</li>
+  <li>Compute the posterior predictive &sigma;<sub>AB</sub>(&tau;) with uncertainty bands.</li>
+</ul>
+
+<!-- ═══════ BLOCK 3 ═══════ -->
+
+<div class="part-divider" id="block-3">
+<h2>Block 3: Network Topology and Closure</h2>
+<p>Three or more clocks &mdash; closure as a diagnostic</p>
+</div>
+
+<h3>3.1 Research Question</h3>
+<p>How does network topology (line, triangle, star, complete graph) affect the achievable comparison accuracy, and can triangular closure detect hidden systematics?</p>
+
+<h3>3.2 Tasks</h3>
+
+<h4>Triangle Network</h4>
+<ul>
+  <li>Simulate three clocks with different noise profiles: one &ldquo;good&rdquo; (low h<sub>0</sub>), one &ldquo;mediocre&rdquo;, one &ldquo;poor&rdquo;.</li>
+  <li>Compute all three pairwise comparisons. Verify closure: y<sub>AB</sub> + y<sub>BC</sub> + y<sub>CA</sub> &asymp; 0.</li>
+  <li>Inject a systematic frequency offset on one clock. Show that closure breaks and the residual localises the faulty clock.</li>
+  <li>Inject a systematic on the <em>link</em> rather than the clock. Show how closure residuals now point to the link rather than a clock.</li>
+</ul>
+
+<h4>Scaling to Larger Networks</h4>
+<ul>
+  <li>Using <code>NetworkX</code>, construct networks of N = 4, 6, 8 clocks in different topologies (line, ring, star, complete).</li>
+  <li>For each topology, compute the number of independent closure constraints and the resulting constraint-to-parameter ratio.</li>
+  <li>Simulate and compute the network-averaged stability. Which topology yields the best average comparison accuracy per unit of comparison resource?</li>
+</ul>
+
+<h4>Bayesian Network Analysis</h4>
+<ul>
+  <li>Treat all clock frequencies and noise amplitudes as unknowns. Use the full set of pairwise comparisons as data. Run a hierarchical Bayesian model.</li>
+  <li>Compare the posterior on each clock&rsquo;s frequency to the true (simulated) value. Does the network information improve estimation compared to isolated pairwise analysis?</li>
+</ul>
+
+<!-- ═══════ BLOCK 4 ═══════ -->
+
+<div class="part-divider" id="block-4">
+<h2>Block 4: Benchmarking Across Scales</h2>
+<p>From atomic clocks to pulsars &mdash; one framework, diverse sources</p>
+</div>
+
+<h3>4.1 Research Question</h3>
+<p>Can a single comparison-network framework meaningfully rank clocks of fundamentally different kinds? Where does the framework succeed, and where does it break down?</p>
+
+<h3>4.2 Tasks</h3>
+
+<h4>Clock Zoo</h4>
+<p>Simulate clocks inspired by real physical systems. For each, assign noise parameters from literature values (document sources):</p>
+<table>
+<thead><tr><th>Clock type</th><th>L<sub>source</sub></th><th>Dominant noise</th><th>Typical &sigma;<sub>y</sub>(1 s)</th></tr></thead>
+<tbody>
+<tr><td>Optical lattice (Sr/Yb)</td><td>~&mu;m</td><td>White frequency</td><td>~10<sup>&minus;16</sup></td></tr>
+<tr><td>Single-ion (Al<sup>+</sup>)</td><td>~nm</td><td>White frequency (QPN limited)</td><td>~10<sup>&minus;15</sup></td></tr>
+<tr><td>Hydrogen maser</td><td>~cm</td><td>Flicker frequency</td><td>~10<sup>&minus;13</sup></td></tr>
+<tr><td>Quartz crystal</td><td>~cm</td><td>Flicker + random walk</td><td>~10<sup>&minus;12</sup></td></tr>
+<tr><td>Pulsar (MSP)</td><td>~km</td><td>Red (timing noise)</td><td>~10<sup>&minus;15</sup> (at &tau;&sim;yr)</td></tr>
+</tbody>
+</table>
+
+<h4>Unified &eta; Map</h4>
+<ul>
+  <li>Place all clock types in a single network (complete graph). Compute &eta;<sub>opt</sub> for every pair.</li>
+  <li>Create a comprehensive &eta;<sub>opt</sub> map: x-axis = L<sub>comparison</sub>, y-axis = &tau;<sub>opt</sub>, colour = clock-pair type.</li>
+  <li>Overlay the L = c&tau; boundary. Discuss which comparisons approach the causal limit.</li>
+</ul>
+
+<h4>Limits of the Framework</h4>
+<ul>
+  <li>For pulsar timing: the noise is non-stationary and the comparison interval is intrinsically set by orbital mechanics. Discuss how &eta; behaves when &tau; is not freely choosable.</li>
+  <li>For optical lattice clocks: L<sub>source</sub> is quantum-mechanically determined and cannot be decoupled from L<sub>apparatus</sub>. Discuss what this implies for the three-length separation.</li>
+  <li>State clearly where the framework works, where it requires modification, and where it breaks.</li>
+</ul>
+
+<!-- ═══════ SYNTHESIS ═══════ -->
+
+<div class="part-divider" id="synthesis">
+<h2>Synthesis</h2>
+<p></p>
+</div>
+
+<h3>Findings Session Preparation</h3>
+<p>Before the findings session (<a href="rulebook.html#step3">Step 3</a>), prepare a &sim;30-min presentation covering:</p>
+<ol>
+  <li><strong>Key results</strong> with uncertainties from each block.</li>
+  <li><strong>Comparison to expectations:</strong> where did simulation match theory? Where did it diverge?</li>
+  <li><strong>&eta;<sub>opt</sub> map</strong> as the central figure.</li>
+  <li><strong>Unresolved questions</strong> and their implications for the framework.</li>
+</ol>
+
+<h3>Short Report</h3>
+<p>The short report documents your analysis pathway. It is due <strong>7 calendar days before your seminar</strong>. See <a href="rulebook.html#seminar-fp2">Rulebook: Seminar Experiment</a> for format requirements and the <a href="rulebook.html#checklist-short">short report checklist</a>.</p>
+
+<h3>Seminar Presentation</h3>
+<p>The seminar develops your short report into a coherent scientific narrative (60 min total). See <a href="rulebook.html#checklist-seminar">Rulebook: Seminar Presentations Checklist</a>.</p>
+
+<p>Return to <a href="framework.html">Framework</a> or proceed to the <a href="rulebook.html">Rulebook</a> &rarr;</p>
+
+</div>
+<footer>
+  <div class="footer-inner">
+    Physikalisches Institut &middot; Universit&auml;t Freiburg &middot; Draft v0.1 &middot;
+    <a href="https://github.com/adv-labs-ufr/numerical_clock_networks">GitHub Repository</a> &middot;
+    <a href="rulebook.html">FP Rulebook</a>
+    <div class="footer-cd-note">Visual identity: Universit&auml;t Freiburg Corporate Design (cd.uni-freiburg.de) &middot; Feb 2023</div>
+  </div>
+</footer>
+</body>
+</html>
