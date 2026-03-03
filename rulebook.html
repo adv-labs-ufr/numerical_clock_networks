@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rulebook &mdash; Numerical Clock Networks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">Clock Networks Lab</a>
+  <div class="nav-links"><a href="index.html">Overview</a> <a href="framework.html">Framework</a> <a href="tutorial.html">Tutorial</a> <a href="lab.html">Lab</a> <a href="rulebook.html" class="active">Rulebook</a></div>
+</nav>
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Rulebook</h1>
+    <div class="subtitle">Lab Steps, Assessment, Deadlines, and Safety</div>
+    <div class="meta">Adapted from the FP Pedagogical Handbook for the Clock Networks Lab</div>
+  </div>
+</div>
+<div class="container">
+
+<p>This page contains the rules, assessment criteria, and procedures that apply to this experiment. For the full, programme-wide FP rulebook, see the <a href="https://github.com/uwarring82/AdvLab_Guide/blob/main/rulebook.md">master document</a>.</p>
+
+<!-- ═══════ LAB STEPS ═══════ -->
+
+<h2 id="lab-steps">Laboratory Steps</h2>
+<p>Lab hours: 9:00&ndash;17:30 h. Coordinate details with your tutors.</p>
+
+<table>
+<thead><tr><th>Step</th><th>Format</th><th>What you demonstrate</th></tr></thead>
+<tbody>
+<tr><td><span class="step-badge">1</span> Entrance Session</td><td>15-min presentation + 30-min discussion</td><td>Key physics of clocks, noise types, comparison geometry; tutorial solutions</td></tr>
+<tr><td id="step2"><span class="step-badge">2</span> Active Lab + Lab Notes</td><td>Throughout experiment</td><td>Engaged simulation work; in-lab analysis; complete lab notes</td></tr>
+<tr><td id="step3"><span class="step-badge">3</span> Findings Session</td><td>~30-min presentation + 15-min discussion</td><td>Key findings with uncertainties; comparison to expectations; unresolved questions</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-danger"><strong>Limit:</strong> More than 2 failed steps (across all experiments in the course) results in course failure.</div>
+
+<h3>Step 1: Entrance Session</h3>
+<p>Present the key physics: what is a clock, what are the noise types, what does &eta;(&tau;) control? Demonstrate that you have completed the <a href="tutorial.html">Tutorial</a> and can explain your solutions.</p>
+<p><strong>Outcomes:</strong> Passed (proceed) &middot; Repeated (gaps clarified, proceed, documented) &middot; Failed (reschedule, counts toward limit).</p>
+
+<h3>Step 2: Active Lab + Lab Notes</h3>
+<h4>Lab Conduct</h4>
+<ul>
+  <li>Stop and ask if uncertain. Articulate actual reasoning, not what you think is expected.</li>
+  <li>Push notebooks to your repository fork regularly.</li>
+</ul>
+<h4>In-Lab Analysis &mdash; Essential</h4>
+<ul>
+  <li><strong>Estimate results as you go.</strong> Quick Allan deviation plots reveal whether your simulation works.</li>
+  <li><strong>Check noise models early.</strong> If the &sigma;<sub>y</sub>(&tau;) slope is wrong, debug now &mdash; not during report writing.</li>
+  <li><strong>Compare to expectations.</strong> Orders-of-magnitude discrepancies require investigation before proceeding.</li>
+  <li><strong>Plot data during simulation.</strong> Trends, outliers, and convergence failures become visible immediately.</li>
+</ul>
+<div class="callout callout-warning"><strong>Key principle:</strong> Problems caught during simulation can be fixed. Problems discovered during report writing cannot.</div>
+
+<h4>Lab Notes Requirements</h4>
+<p>Your lab notes must allow verification and reconstruction of your work. Record: simulation parameters and seeds, code versions (git commits), all intermediate results, anomalies as they occur, reasoning for parameter choices.</p>
+
+<h4>Tutor Guidance</h4>
+<ul>
+  <li><strong>Default:</strong> Observe. Students lead.</li>
+  <li><strong>Guide when stuck:</strong> Clarifying questions and directions &mdash; not solutions.</li>
+  <li><strong>Intervene only under:</strong> T1 (Safety), T2 (Clear factual error, &gt;90% confidence), T3 (Process feedback).</li>
+</ul>
+
+<h3>Step 3: Findings Session</h3>
+<p>Present key findings with uncertainties, comparison to expectations, and unresolved questions (~30 min + 15 min discussion).</p>
+<p><strong>Minimum requirement:</strong> At least a qualitative discussion of findings with uncertainties, comparison to expectations, and unresolved questions. Quantitative treatment strengthens the presentation.</p>
+
+<!-- ═══════ ASSESSMENT ═══════ -->
+
+<h2 id="seminar-fp2">Assessment: Seminar Experiment Model</h2>
+<p>This experiment follows the seminar-experiment assessment model.</p>
+
+<table>
+<thead><tr><th>Component</th><th>Weight</th><th>Deadline</th></tr></thead>
+<tbody>
+<tr><td>Short Report</td><td>30%</td><td>7 calendar days before seminar</td></tr>
+<tr><td>Seminar Presentation</td><td>70%</td><td>Scheduled date</td></tr>
+<tr><td><strong>Combined</strong></td><td><strong>Weight 2.0</strong> in course grade</td><td></td></tr>
+</tbody>
+</table>
+
+<h3 id="checklist-short">Short Report Requirements</h3>
+<p>The short report documents the complete analysis pathway. Bullet points and keywords are acceptable; the seminar provides the venue for full verbal articulation.</p>
+<table>
+<thead><tr><th>Criterion</th><th>Requirement</th></tr></thead>
+<tbody>
+<tr><td><strong>Data Analysis</strong></td><td>Complete pathway documented; all steps from noise generation to final &eta;<sub>opt</sub> map traceable</td></tr>
+<tr><td><strong>Uncertainty Treatment</strong></td><td>Uncertainty propagation documented; frequentist CIs and Bayesian credible intervals; sources identified</td></tr>
+<tr><td><strong>Assumptions</strong></td><td>All assumptions and approximations explicitly listed (noise models, prior choices, link models)</td></tr>
+<tr><td><strong>Comparison to Expectations</strong></td><td>Analytic predictions stated; deviations noted and addressed</td></tr>
+<tr><td><strong>Key Results</strong></td><td>Final numerical results clearly marked with uncertainties</td></tr>
+<tr><td><strong>Attachments</strong></td><td>Lab notes, simulation code (git link), raw output data</td></tr>
+</tbody>
+</table>
+
+<h4>Late Submission</h4>
+<table>
+<thead><tr><th>Submission</th><th>Consequence</th></tr></thead>
+<tbody>
+<tr><td>On time</td><td>Seminar proceeds as scheduled</td></tr>
+<tr><td>1&ndash;3 days late</td><td>0.3 grade penalty; seminar may be rescheduled</td></tr>
+<tr><td>&gt;3 days late</td><td>0.7 grade penalty; seminar rescheduled</td></tr>
+<tr><td>Not submitted by rescheduled date</td><td>Combined grade 5.0</td></tr>
+</tbody>
+</table>
+<p><strong>Extensions:</strong> Written request before deadline with documentation (illness, family emergency, comparable). Workload alone does not constitute grounds.</p>
+
+<h3 id="checklist-seminar">Seminar Presentation (60 minutes)</h3>
+<table>
+<thead><tr><th>Phase</th><th>Duration</th></tr></thead>
+<tbody>
+<tr><td>Uninterrupted presentation</td><td>~30 min</td></tr>
+<tr><td>Open discussion</td><td>~15 min</td></tr>
+<tr><td>Exam questions (organisers/tutors)</td><td>~15 min</td></tr>
+</tbody>
+</table>
+
+<h4>Content Requirements</h4>
+<ol type="a">
+  <li><strong>Motivation:</strong> What is a clock? Why comparison geometry?</li>
+  <li><strong>Theory:</strong> Frequentist and Bayesian foundations; the &eta;(&tau;) parameter.</li>
+  <li><strong>Methods:</strong> Simulation setup, noise models, network topologies, software tools.</li>
+  <li><strong>Data analysis:</strong> From raw time series to Allan deviation to &eta;<sub>opt</sub> map.</li>
+  <li><strong>Results:</strong> Final &eta;<sub>opt</sub> landscape with uncertainties; model comparison outcomes; closure diagnostics.</li>
+  <li><strong>Summary:</strong> What worked, what broke, what you would do differently.</li>
+  <li><strong>Sources:</strong> Cited on slides.</li>
+</ol>
+
+<h4>Presentation Quality</h4>
+<ul>
+  <li>Coherent logical thread from question to result.</li>
+  <li>Claims follow from evidence. Uncertainties acknowledged.</li>
+  <li>Results traceable to submitted short report.</li>
+  <li>Consistent labels and symbols; avoid unexplained abbreviations.</li>
+  <li>Address peers, not just examiners.</li>
+</ul>
+
+<!-- ═══════ SAFETY ═══════ -->
+
+<h2 id="safety">Safety</h2>
+<ul>
+  <li><strong>Training:</strong> Laser and radiation safety training required before first laboratory entry; renewal every 12 months.</li>
+  <li><strong>Violations:</strong> First minor &rarr; removal + retraining. Repeated or serious &rarr; course exclusion.</li>
+  <li><strong>Emergency stop:</strong> Anyone may halt activity for safety reasons. No disadvantage for good-faith invocation.</li>
+</ul>
+<div class="callout callout-note"><strong>Numerical lab note:</strong> While this experiment is primarily computational, safety training remains required because you will work in a shared laboratory space with running experiments. The three rules apply: know before you touch, report problems immediately, never work alone with hazardous equipment.</div>
+
+<!-- ═══════ ESCALATION ═══════ -->
+
+<h2 id="escalation">Escalation</h2>
+<ol>
+  <li>Attempt resolution with tutor (unless the tutor is the subject of the concern).</li>
+  <li>If unresolved within 7 days: email organiser.</li>
+  <li>If organiser unresponsive: contact Dean of Studies.</li>
+</ol>
+<p><strong>Response deadlines:</strong> Acknowledgement within 2 working days; resolution within 10 working days. Good-faith escalation cannot lead to disadvantage.</p>
+
+<!-- ═══════ CONSEQUENCES ═══════ -->
+
+<h2 id="consequences">Consequences</h2>
+<table>
+<thead><tr><th>Situation</th><th>Consequence</th></tr></thead>
+<tbody>
+<tr><td>Safety violation</td><td>Removal &rarr; retraining &rarr; exclusion for repeated</td></tr>
+<tr><td>&gt;2 failed steps (course-wide)</td><td>Course failure</td></tr>
+<tr><td>Late short report &le;3 / &gt;3 days</td><td>0.3 / 0.7 grade penalty</td></tr>
+<tr><td>Short report + seminar combined 5.0</td><td>Resubmission + repeat seminar opportunity</td></tr>
+</tbody>
+</table>
+
+<!-- ═══════ COMMITMENTS ═══════ -->
+
+<h2 id="commitments">Core Commitments</h2>
+<p><strong>Students:</strong> Prepare thoroughly. Present honestly. Ask when uncertain. Meet deadlines or communicate early.</p>
+<p><strong>Tutors:</strong> Observe by default. Guide when stuck. Intervene only for safety, clear errors, or process feedback. Assess against published criteria only.</p>
+<p><strong>The system:</strong> All criteria are known before you begin. Every decision has a name and reason. Mistakes are correctable. Divergence is legitimate.</p>
+
+<!-- ═══════ APPENDIX: LAB NOTES ═══════ -->
+
+<h2 id="appendix-notes">Appendix: Lab Notes Checklist</h2>
+<ol>
+  <li><strong>Title and date</strong> for each session.</li>
+  <li><strong>Objective:</strong> state the purpose of the day&rsquo;s work.</li>
+  <li><strong>Simulation parameters:</strong> noise amplitudes, number of samples, random seeds, git commit hash.</li>
+  <li><strong>Procedure:</strong> what you ran, in what order, including changes from the plan.</li>
+  <li><strong>Observations and data:</strong> all output, including intermediate plots and unexpected behaviour.</li>
+  <li><strong>Calculations and analysis:</strong> Allan deviations, posterior summaries, closure residuals with uncertainties.</li>
+  <li><strong>Interpretation:</strong> what the results mean in terms of the framework.</li>
+  <li><strong>Errors and anomalies:</strong> convergence failures, numerical artefacts, unresolved discrepancies.</li>
+  <li><strong>Improvements:</strong> what you would change next time.</li>
+  <li><strong>References:</strong> cited where used.</li>
+  <li><strong>Sign and date</strong> each entry.</li>
+</ol>
+
+<div class="callout callout-note"><strong>Format:</strong> You choose, but a single file uploaded to ILIAS. Jupyter notebooks with embedded markdown are encouraged &mdash; they combine code, figures, and narrative in one traceable document.</div>
+
+</div>
+<footer>
+  <div class="footer-inner">
+    Physikalisches Institut &middot; Universit&auml;t Freiburg &middot; Draft v0.1 &middot;
+    <a href="https://github.com/adv-labs-ufr/numerical_clock_networks">GitHub Repository</a> &middot;
+    <a href="https://github.com/uwarring82/AdvLab_Guide/blob/main/rulebook.md">Full FP Rulebook</a>
+    <div class="footer-cd-note">Visual identity: Universit&auml;t Freiburg Corporate Design (cd.uni-freiburg.de) &middot; Feb 2023</div>
+  </div>
+</footer>
+</body>
+</html>
