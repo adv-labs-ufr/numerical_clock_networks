@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Framework — Numerical Clock Networks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">Clock Networks Lab</a>
+  <div class="nav-links"><a href="index.html">Overview</a> <a href="framework.html" class="active">Framework</a> <a href="tutorial.html">Tutorial</a> <a href="lab.html">Lab</a> <a href="rulebook.html">Rulebook</a></div>
+</nav>
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Framework</h1>
+    <div class="subtitle">From Oscillators to Comparison Geometry</div>
+    <div class="meta">Frequentist and Bayesian Foundations &middot; The Causal-Geometry Clock Framework</div>
+  </div>
+</div>
+<div class="container">
+
+<p>This page develops the theoretical language you need before entering the lab. It is organised in three parts: frequentist tools for characterising clock stability, Bayesian tools for inference under uncertainty, and the causal-geometry framework that unifies both perspectives within a single comparison-network logic.</p>
+
+<div class="callout callout-note"><strong>Reading order:</strong> Work through Parts A and B first; they supply the statistical vocabulary. Part C then reframes everything as boundary conditions on comparison geometry. The <a href="tutorial.html">Tutorial</a> translates each concept into concrete computations.</div>
+
+<!-- ─────────────── PART A ─────────────── -->
+
+<div class="part-divider" id="frequentist">
+<h2>Part A: Frequentist Foundations</h2>
+<p>Classical stability analysis &mdash; the language of frequency metrology</p>
+</div>
+
+<h3 id="fa-oscillator">A.1 The Idealised Oscillator</h3>
+<p>Begin with a signal of nominal frequency &nu;<sub>0</sub>. Any real oscillator departs from this ideal, and the instantaneous output can be written as</p>
+<div class="math-block">V(t) = V<sub>0</sub> sin[2&pi;&nu;<sub>0</sub> t + &phi;(t)]</div>
+<p>where &phi;(t) encodes all phase deviations from the ideal. The fractional frequency deviation is then</p>
+<div class="math-block">y(t) = (1 / 2&pi;&nu;<sub>0</sub>) d&phi;/dt</div>
+<p>Every stability measure below reduces to a statement about the statistics of y(t) or &phi;(t).</p>
+
+<h3 id="fa-psd">A.2 Power Spectral Density and Noise Types</h3>
+<p>The one-sided power spectral density (PSD) of fractional frequency fluctuations, S<sub>y</sub>(f), characterises noise in the Fourier domain. A power-law model covers most physical oscillators:</p>
+<div class="math-block">S<sub>y</sub>(f) = &Sigma;<sub>&alpha;</sub> h<sub>&alpha;</sub> f<sup>&alpha;</sup> ,&emsp; &alpha; &isin; {&minus;2, &minus;1, 0, +1, +2}</div>
+<table>
+<thead><tr><th>&alpha;</th><th>Noise type</th><th>Physical origin (examples)</th></tr></thead>
+<tbody>
+<tr><td>+2</td><td>White phase</td><td>Additive broadband noise in detection electronics</td></tr>
+<tr><td>+1</td><td>Flicker phase</td><td>Active-device noise in amplifiers</td></tr>
+<tr><td>0</td><td>White frequency</td><td>Shot noise; thermal noise in passive resonators</td></tr>
+<tr><td>&minus;1</td><td>Flicker frequency</td><td>Environmental perturbations; resonator ageing</td></tr>
+<tr><td>&minus;2</td><td>Random-walk frequency</td><td>Environmental drift; temperature fluctuations</td></tr>
+</tbody>
+</table>
+
+<h3 id="fa-allan">A.3 Allan Deviation</h3>
+<p>The classical variance of y(t) diverges for noise types with &alpha;&nbsp;&le;&nbsp;&minus;1. Allan variance resolves this by using second differences of phase:</p>
+<div class="math-block">&sigma;<sub>y</sub>&sup2;(&tau;) = (1/2) &lt; (&macr;y<sub>n+1</sub> &minus; &macr;y<sub>n</sub>)&sup2; &gt;</div>
+<p>where &macr;y<sub>n</sub> is the average fractional frequency over the n-th interval of duration &tau;. The Allan deviation &sigma;<sub>y</sub>(&tau;) maps directly onto the noise-type exponent &alpha;: a log-log plot of &sigma;<sub>y</sub> vs &tau; reveals distinct slopes for each regime.</p>
+<table>
+<thead><tr><th>Noise type</th><th>Slope of &sigma;<sub>y</sub>(&tau;) on log-log</th></tr></thead>
+<tbody>
+<tr><td>White phase (&alpha;=+2)</td><td>&tau;<sup>&minus;1</sup></td></tr>
+<tr><td>Flicker phase (&alpha;=+1)</td><td>&tau;<sup>&minus;1</sup> (with log correction)</td></tr>
+<tr><td>White frequency (&alpha;=0)</td><td>&tau;<sup>&minus;1/2</sup></td></tr>
+<tr><td>Flicker frequency (&alpha;=&minus;1)</td><td>&tau;<sup>0</sup> (flat)</td></tr>
+<tr><td>Random-walk frequency (&alpha;=&minus;2)</td><td>&tau;<sup>+1/2</sup></td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-warning"><strong>Diagnostic power:</strong> The Allan deviation plot is the primary diagnostic tool for clock stability. When you simulate a clock in this lab, your first validation step is always: does the &sigma;<sub>y</sub>(&tau;) slope match the noise model you injected?</div>
+
+<h3 id="fa-modified">A.4 Modified Allan and Overlapping Estimators</h3>
+<p>The standard Allan variance cannot distinguish white phase from flicker phase noise (both give &tau;<sup>&minus;1</sup>). The <strong>modified Allan variance</strong> (MVAR) applies additional averaging to separate these regimes. In practice, the <strong>overlapping Allan variance</strong> provides better statistical confidence from finite datasets by reusing samples.</p>
+<p>The <code>allantools</code> Python library computes all variants. In the tutorial you will implement the standard estimator from scratch before using library functions, so that you understand what the library is doing.</p>
+
+<h3 id="fa-triangular">A.5 Triangular Closure</h3>
+<p>When comparing clocks pairwise within a network of N clocks, the comparison results must satisfy closure relations. For three clocks A, B, C:</p>
+<div class="math-block">y<sub>AB</sub> + y<sub>BC</sub> + y<sub>CA</sub> = 0</div>
+<p>Triangular closure provides a powerful self-consistency check that requires no external reference. Residual closure violations indicate unmodelled systematic effects or transmission noise. In a network of N clocks, the number of independent closure constraints grows as (N&minus;1)(N&minus;2)/2, rapidly over-constraining the system.</p>
+
+<!-- ─────────────── PART B ─────────────── -->
+
+<div class="part-divider" id="bayesian">
+<h2>Part B: Bayesian Foundations</h2>
+<p>Inference under uncertainty &mdash; updating knowledge as data arrive</p>
+</div>
+
+<h3 id="fb-bayes">B.1 Bayes&rsquo; Theorem as Update Rule</h3>
+<p>Given data D and model parameters &theta;:</p>
+<div class="math-block">p(&theta; | D) = p(D | &theta;) &middot; p(&theta;) / p(D)</div>
+<p>The posterior p(&theta;|D) combines the likelihood p(D|&theta;) with prior knowledge p(&theta;). The normalisation p(D) &mdash; the evidence &mdash; becomes decisive when comparing models.</p>
+<p>The Bayesian perspective is not opposed to frequentist methods; it answers a different question. Frequentist tools ask &ldquo;how probable is this data given the model?&rdquo; Bayesian tools ask &ldquo;how probable is the model given the data?&rdquo; Clock metrology benefits from both.</p>
+
+<h3 id="fb-priors">B.2 Prior Selection for Clock Parameters</h3>
+<p>In clock parameter estimation, priors encode physical constraints:</p>
+<ul>
+  <li><strong>Frequency offset:</strong> Gaussian prior centred on nominal, width set by manufacturer specification or prior measurement.</li>
+  <li><strong>Noise amplitude h<sub>&alpha;</sub>:</strong> Log-uniform (Jeffreys) prior &mdash; appropriate for scale parameters spanning orders of magnitude.</li>
+  <li><strong>Drift rate:</strong> Half-normal prior (drift is positive-definite in most oscillator models).</li>
+</ul>
+<p>A prior is not a bias; it is a documented assumption. The tutorial exercises will test sensitivity to prior choice.</p>
+
+<h3 id="fb-mcmc">B.3 Markov Chain Monte Carlo Sampling</h3>
+<p>For models with more than a few parameters, direct computation of the posterior is intractable. MCMC samplers (Metropolis-Hastings, Hamiltonian Monte Carlo) generate samples from the posterior by constructing a Markov chain whose stationary distribution is p(&theta;|D).</p>
+<p>Practical diagnostics for convergence: trace plots, autocorrelation lengths, the Gelman-Rubin &Rcirc; statistic. You will use <code>emcee</code> or <code>PyMC</code> in the tutorial.</p>
+
+<h3 id="fb-model-comparison">B.4 Model Comparison and the Evidence</h3>
+<p>The evidence (marginal likelihood) ranks competing models:</p>
+<div class="math-block">p(D) = &int; p(D | &theta;) p(&theta;) d&theta;</div>
+<p>The Bayes factor B<sub>12</sub> = p(D|M<sub>1</sub>) / p(D|M<sub>2</sub>) quantifies how strongly the data prefer one model over another. This becomes directly relevant when deciding whether a clock&rsquo;s noise is better described by, say, white + flicker frequency vs. white + random-walk frequency.</p>
+
+<h3 id="fb-posterior-predictive">B.5 Posterior Predictive Checks</h3>
+<p>Generate synthetic datasets from the fitted posterior and compare their statistical properties (Allan deviation slopes, closure residuals) to the observed data. If the posterior predictive distribution does not contain the observations, the model is falsified &mdash; regardless of how good the fit appeared.</p>
+
+<!-- ─────────────── PART C ─────────────── -->
+
+<div class="part-divider" id="causal-geometry">
+<h2>Part C: The Causal-Geometry Clock Framework</h2>
+<p>Unifying clocks through comparison geometry, not oscillator physics</p>
+</div>
+
+<h3 id="fc-key-insight">C.1 The Key Insight</h3>
+<p>Conventional clock science focuses on the oscillator: what oscillates, at what frequency, with what stability. This framework shifts the focus to the <strong>comparison</strong>: what can be compared, over what distance, in what time?</p>
+<p>The central claim:</p>
+<div class="callout callout-note"><strong>Boundary condition:</strong> Any phase comparison between two clocks separated by distance L must satisfy L &le; cT, where T is the comparison interval and c is the speed of signal propagation. This is not a law of clock physics; it is a boundary condition that all clocks must respect.</div>
+
+<h3 id="fc-three-lengths">C.2 Three Lengths</h3>
+<p>The framework separates three physically distinct length scales:</p>
+<table>
+<thead><tr><th>Length</th><th>Symbol</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>Source length</td><td>L<sub>source</sub></td><td>Spatial extent of the oscillator itself (atom, pendulum, pulsar)</td></tr>
+<tr><td>Apparatus length</td><td>L<sub>apparatus</sub></td><td>Size of the instrument chain (cavity, electronics, detector)</td></tr>
+<tr><td>Comparison length</td><td>L<sub>comparison</sub></td><td>Distance between the two clocks being compared</td></tr>
+</tbody>
+</table>
+<p>In most treatments, these are conflated. The framework insists they are independently variable and independently constraining. Each generates its own noise floor, its own systematic budget, and its own scaling.</p>
+
+<h3 id="fc-eta">C.3 The Clock Metric &eta;(&tau;)</h3>
+<p>Define the <strong>causal efficiency</strong> of a comparison:</p>
+<div class="math-block">&eta;(&tau;) = L<sub>comparison</sub> / (c &middot; &tau;)</div>
+<p>where &tau; is the averaging time. This parameter ranges from 0 (local comparison, unlimited averaging) to 1 (comparison at the causal limit &mdash; one light-travel-time, no averaging possible).</p>
+<p>&eta;(&tau;) is an <strong>architectural control parameter</strong>, not a figure of merit. It tells you where in the design space a given comparison sits:</p>
+<ul>
+  <li><strong>&eta; &rarr; 0:</strong> Local regime. Averaging dominates. Stability improves as &tau;<sup>&minus;1/2</sup> (white frequency noise).</li>
+  <li><strong>&eta; &rarr; 1:</strong> Causal-limit regime. No room for averaging. Single-shot phase resolution determines the comparison quality.</li>
+  <li><strong>&eta;<sub>opt</sub>:</strong> The crossover point where local averaging gains are balanced against propagation-induced decorrelation. Its location depends on the noise model and network topology. <em>This is the falsifiable prediction of the framework.</em></li>
+</ul>
+
+<h3 id="fc-falsifiability">C.4 Falsifiability</h3>
+<p>The framework is falsifiable in the location and behaviour of &eta;<sub>opt</sub>. If the predicted crossover does not appear in simulation, or appears at a different &tau;, the framework is either incomplete or wrong. This is the standard the lab will hold you to: not &ldquo;does the framework feel right?&rdquo; but &ldquo;does &eta;<sub>opt</sub> appear where predicted, and do deviations teach us something?&rdquo;</p>
+
+<h3 id="fc-network">C.5 Network Perspective</h3>
+<p>For a network of N clocks, each pairwise comparison has its own &eta;<sub>ij</sub>(&tau;). The network-level question becomes: given the graph topology and noise budgets, what is the optimal allocation of comparison resources (averaging time, link bandwidth)?</p>
+<p>Triangular closure (Part A.5) and Bayesian model comparison (Part B.4) become tools within this network perspective. Closure residuals map directly to consistency of the &eta; values; Bayesian evidence selects the noise model most compatible with the network geometry.</p>
+
+<h3 id="fc-scope">C.6 What the Framework Is Not</h3>
+<ul>
+  <li>It is <strong>not a law</strong>. It is a boundary condition: L<sub>comparison</sub> &le; cT constrains but does not dictate clock design.</li>
+  <li>It is <strong>not a replacement</strong> for oscillator physics. The three lengths <em>include</em> L<sub>source</sub> and L<sub>apparatus</sub>; oscillator properties enter through these.</li>
+  <li>It is <strong>agnostic about the Planck scale</strong>. &eta; = 1 at &tau; = t<sub>P</sub> is a dimensional endpoint, not a physical claim.</li>
+</ul>
+
+<hr>
+
+<h2 id="synthesis">Synthesis: How the Three Parts Connect</h2>
+<p>Frequentist tools (&sigma;<sub>y</sub>, S<sub>y</sub>, closure) characterise individual clocks and pairwise links. Bayesian tools (posterior inference, model comparison, predictive checks) select among competing descriptions of the noise. The causal-geometry framework provides the <em>architectural context</em>: it tells you which comparisons are possible, what the fundamental noise floor is for a given geometry, and where to look for the signature of the comparison limit.</p>
+
+<p>In the <a href="tutorial.html">Tutorial</a>, you will compute all three. In the <a href="lab.html">Lab</a>, you will bring them together in a clock network simulation.</p>
+
+</div>
+<footer>
+  <div class="footer-inner">
+    Physikalisches Institut &middot; Universit&auml;t Freiburg &middot; Draft v0.1 &middot;
+    <a href="https://github.com/adv-labs-ufr/numerical_clock_networks">GitHub Repository</a> &middot;
+    <a href="rulebook.html">FP Rulebook</a>
+    <div class="footer-cd-note">Visual identity: Universit&auml;t Freiburg Corporate Design (cd.uni-freiburg.de) &middot; Feb 2023</div>
+  </div>
+</footer>
+</body>
+</html>
