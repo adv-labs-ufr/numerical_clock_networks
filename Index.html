@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Numerical Clock Networks — Master Laboratory Applied Physics</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">Clock Networks Lab</a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Overview</a>
+    <a href="framework.html" >Framework</a>
+    <a href="tutorial.html" >Tutorial</a>
+    <a href="lab.html" >Lab</a>
+    <a href="rulebook.html" >Rulebook</a>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Numerical Clock Networks</h1>
+    <div class="subtitle">What Is a Clock? &mdash; A Collaborative Research Lab</div>
+    <div class="meta">
+      Master Laboratory Applied Physics (8 ECTS) &middot; Module 07LE33K-MLAB<br>
+      M.Sc. Applied Physics &middot; Physikalisches Institut &middot; Universit&auml;t Freiburg
+    </div>
+    <div class="draft-badge">Pedagogical Handbook &middot; Draft v0.1</div>
+  </div>
+</div>
+<div class="container">
+
+<h2 id="purpose">Purpose</h2>
+
+<p>This lab explores a single organising question: <strong>What does it mean for something to be a clock?</strong> Students move from isolated oscillator models to a unified research logic: <em>phase comparison &rarr; network geometry &rarr; observable constraint</em>. The organising principle is the causal-geometry framework, where clocks are unified not by their oscillator physics but by the geometry of phase comparison within networks.</p>
+
+<p>Students will simulate, benchmark, and critically evaluate clocks of different kinds &mdash; atomic, engineered, geophysical, and astronomical &mdash; within a common comparison network. The lab develops both frequentist and Bayesian statistical reasoning alongside the physical concepts.</p>
+
+<div class="callout callout-note"><strong>Pilot notice:</strong> You are among the first cohorts to attempt this lab. The material has not been fully calibrated by prior experience. Your critical feedback is not merely welcome but essential. Your lab notes, your confusion, your objections &mdash; these are the raw data from which a better lab will be built.</div>
+
+<h2 id="programme-context">Programme Context</h2>
+
+<p>The Master Laboratory Applied Physics is a <strong>compulsory module</strong> (8 ECTS, 10% of final grade) in the M.Sc. Applied Physics. It must be completed within the first two semesters and is a prerequisite for the Research Traineeship.</p>
+
+<table>
+<thead><tr><th>Module detail</th><th></th></tr></thead>
+<tbody>
+<tr><td><strong>Module number</strong></td><td>07LE33K-MLAB</td></tr>
+<tr><td><strong>ECTS</strong></td><td>8</td></tr>
+<tr><td><strong>Weight in final grade</strong></td><td>10%</td></tr>
+<tr><td><strong>Assessment</strong></td><td>Short report (30%) + Seminar presentation (70%); combined weight 2.0</td></tr>
+<tr><td><strong>Prerequisite for</strong></td><td>Research Traineeship (Module 3.7)</td></tr>
+<tr><td><strong>Language</strong></td><td>English</td></tr>
+</tbody>
+</table>
+
+<p>For the full programme structure, see the <a href="https://www.studium.uni-freiburg.de/de/studienangebot/studienfaecher/modulhandbuecher/modulhandbuch-m-sc-applied-physics.pdf/at_download/file">M.Sc. Applied Physics Module Handbook</a> (PO 2016, version 01.04.2025).</p>
+
+<h2 id="structure">Structure</h2>
+
+<p>The lab is organised across four linked resources. Work through them in order; each builds on the previous.</p>
+
+<div class="card-grid">
+  <a class="card" href="framework.html">
+    <h3>Framework</h3>
+    <p>Frequentist and Bayesian foundations, causal-geometry clock framework, the &eta;(&tau;) control parameter.</p>
+  </a>
+  <a class="card" href="tutorial.html">
+    <h3>Tutorial</h3>
+    <p>Derivation scaffolds from oscillator model to phase comparison. Computational exercises: noise simulation, Allan deviation, Bayesian fits.</p>
+  </a>
+  <a class="card" href="lab.html">
+    <h3>Lab</h3>
+    <p>Research plan, numerical foundations, clock network simulations, benchmarking, and synthesis.</p>
+  </a>
+  <a class="card" href="rulebook.html">
+    <h3>Rulebook</h3>
+    <p>Lab steps, assessment criteria, deadlines, safety, and escalation procedures.</p>
+  </a>
+</div>
+
+<h2 id="learning-goals">Learning Goals</h2>
+
+<ul>
+  <li>Reflect critically on the concept of time and what constitutes a clock.</li>
+  <li>Express phase, frequency, and stability mathematically within both frequentist and Bayesian frameworks.</li>
+  <li>Understand the causal-geometry framework: clocks unified by comparison geometry, not oscillator physics.</li>
+  <li>Connect numerical models across scales &mdash; from quantum oscillators to pulsars.</li>
+  <li>Design, simulate, and benchmark a clock comparison network.</li>
+  <li>Practise open, collaborative research documentation.</li>
+  <li>Communicate scientific results in a short report and seminar presentation.</li>
+</ul>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+  <li>Classical mechanics including Lagrangian formulation (Theo I)</li>
+  <li>Quantum mechanics including perturbation theory (Theo II/III)</li>
+  <li>Fourier transforms in the context of signal analysis</li>
+  <li>Basic statistical methods: &chi;&sup2; fitting, uncertainty propagation</li>
+  <li>Python with NumPy/SciPy</li>
+  <li>Laser and radiation safety training completed before first entry</li>
+</ul>
+
+<h2 id="references">Essential Reading</h2>
+
+<h4>Metrology and Clock Networks</h4>
+<ul>
+  <li>Fritz Riehle, <em>Frequency Standards: Basics and Applications</em>, Wiley-VCH, 2003.</li>
+  <li>W. J. Riley, <em>Handbook of Frequency Stability Analysis</em>, NIST SP 1065.</li>
+  <li>D. W. Allan, N. Ashby, C. C. Hodge, <em>The Science of Timekeeping</em>, HP Application Note 1289.</li>
+  <li>Calonico et al., &ldquo;Optical clock networks for geodesy,&rdquo; <em>Rep. Prog. Phys.</em> 81, 2018.</li>
+  <li>Chou et al., &ldquo;Optical Clocks and Relativity,&rdquo; <em>Science</em> 329, 1630 (2010).</li>
+</ul>
+
+<h4>Statistical Methods</h4>
+<ul>
+  <li>D. S. Sivia and J. Skilling, <em>Data Analysis: A Bayesian Tutorial</em>, 2nd ed., Oxford, 2006.</li>
+  <li>Feldman and Cousins, &ldquo;Unified Approach to the Classical Statistical Analysis of Small Signals,&rdquo; <em>Phys. Rev. D</em> 57, 3873 (1998).</li>
+</ul>
+
+<h4>Software Tools</h4>
+<ul>
+  <li><a href="https://pypi.org/project/allantools/">allantools</a> &mdash; Allan deviation and related stability measures</li>
+  <li><a href="https://numpy.org/">NumPy</a> / <a href="https://www.scipy.org/">SciPy</a> &mdash; Numerical computing</li>
+  <li><a href="https://matplotlib.org/">Matplotlib</a> &mdash; Visualisation</li>
+  <li><a href="https://networkx.org/">NetworkX</a> &mdash; Graph / network analysis</li>
+  <li><a href="https://www.pymc.io/">PyMC</a> or <a href="https://emcee.readthedocs.io/">emcee</a> &mdash; Bayesian inference</li>
+</ul>
+
+<h2 id="repository">Repository</h2>
+
+<p>All materials, notebooks, and data live in a public GitHub repository:</p>
+
+<p><a href="https://github.com/adv-labs-ufr/numerical_clock_networks">github.com/adv-labs-ufr/numerical_clock_networks</a></p>
+
+<pre><code>numerical_clock_networks/
+&boxv;&boxh;&boxh; notes/          &larr; research plans, reflections, references
+&boxv;&boxh;&boxh; notebooks/      &larr; numerical implementations
+&boxv;&boxh;&boxh; figures/        &larr; generated plots and schematics
+&boxv;&boxh;&boxh; report/         &larr; evolving research summary
+&boxur;&boxh;&boxh; requirements.txt</code></pre>
+
+<p>Fork the repo, work in your directories, and push final results. Each contribution becomes part of a growing, open scientific record on time and frequency.</p>
+
+</div>
+<footer>
+  <div class="footer-inner">
+    Physikalisches Institut &middot; Universit&auml;t Freiburg &middot; Draft v0.1 &middot;
+    <a href="https://github.com/adv-labs-ufr/numerical_clock_networks">GitHub Repository</a> &middot;
+    <a href="rulebook.html">FP Rulebook</a>
+    <div class="footer-cd-note">Visual identity: Universit&auml;t Freiburg Corporate Design (cd.uni-freiburg.de) &middot; Feb 2023</div>
+  </div>
+</footer>
+</body>
+</html>
