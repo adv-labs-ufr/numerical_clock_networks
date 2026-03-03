@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial &mdash; Numerical Clock Networks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">Clock Networks Lab</a>
+  <div class="nav-links"><a href="index.html">Overview</a> <a href="framework.html">Framework</a> <a href="tutorial.html" class="active">Tutorial</a> <a href="lab.html">Lab</a> <a href="rulebook.html">Rulebook</a></div>
+</nav>
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Tutorial</h1>
+    <div class="subtitle">Derivations and Computational Exercises</div>
+    <div class="meta">Complete before the first lab session &middot; Estimated time: 10&ndash;15 hours</div>
+  </div>
+</div>
+<div class="container">
+
+<p>This tutorial bridges the <a href="framework.html">Framework</a> and the <a href="lab.html">Lab</a>. Part&nbsp;I develops derivations by hand; Part&nbsp;II translates them into working code. Both parts are prerequisites for the entrance session.</p>
+
+<div class="callout callout-warning"><strong>Preparation standard:</strong> At the entrance session you will be asked to present your solutions and explain your reasoning. Understanding beats completeness &mdash; but you must be able to articulate what each step does and why.</div>
+
+<!-- ═══════ PART I: DERIVATIONS ═══════ -->
+
+<div class="part-divider" id="derivations">
+<h2>Part I: Derivation Scaffolds</h2>
+<p>Pen-and-paper work &mdash; from oscillator model to comparison geometry</p>
+</div>
+
+<h3 id="d1">D.1 From Oscillator to Phase Variable</h3>
+<p>Start with a damped harmonic oscillator driven by a restoring potential. The general solution is</p>
+<div class="math-block">x(t) = A(t) cos[2&pi;&nu;<sub>0</sub> t + &phi;(t)]</div>
+<p>where A(t) captures amplitude noise and &phi;(t) captures phase noise.</p>
+
+<h4>Exercise D.1.1</h4>
+<p>Show that for a high-Q oscillator (Q &gt;&gt; 1), amplitude fluctuations decay on a timescale &tau;<sub>A</sub> = 2Q/&omega;<sub>0</sub>, while phase fluctuations accumulate without bound. Argue why clock metrology focuses on &phi;(t) rather than A(t).</p>
+
+<h4>Exercise D.1.2</h4>
+<p>Define the fractional frequency deviation y(t) = (1/2&pi;&nu;<sub>0</sub>)&nbsp;d&phi;/dt. Show that the time-averaged fractional frequency over an interval [t, t+&tau;] is</p>
+<div class="math-block">&macr;y<sub>k</sub> = [&phi;(t<sub>k</sub> + &tau;) &minus; &phi;(t<sub>k</sub>)] / (2&pi;&nu;<sub>0</sub>&tau;)</div>
+
+<h3 id="d2">D.2 Allan Variance from First Principles</h3>
+
+<h4>Exercise D.2.1</h4>
+<p>Starting from the definition of &macr;y<sub>k</sub>, derive the two-sample (Allan) variance:</p>
+<div class="math-block">&sigma;<sub>y</sub>&sup2;(&tau;) = (1/2) &lt;(&macr;y<sub>k+1</sub> &minus; &macr;y<sub>k</sub>)&sup2;&gt;</div>
+<p>Show that this is equivalent to</p>
+<div class="math-block">&sigma;<sub>y</sub>&sup2;(&tau;) = 2 &int;<sub>0</sub><sup>&infin;</sup> S<sub>y</sub>(f) sin<sup>4</sup>(&pi;f&tau;) / (&pi;f&tau;)<sup>2</sup> df</div>
+
+<h4>Exercise D.2.2</h4>
+<p>Evaluate the integral above for S<sub>y</sub>(f) = h<sub>0</sub> (white frequency noise). Show that &sigma;<sub>y</sub>(&tau;) &propto; &tau;<sup>&minus;1/2</sup> and determine the proportionality constant in terms of h<sub>0</sub>.</p>
+
+<h4>Exercise D.2.3</h4>
+<p>Repeat for S<sub>y</sub>(f) = h<sub>&minus;1</sub>f<sup>&minus;1</sup> (flicker frequency noise). Show that &sigma;<sub>y</sub>(&tau;) becomes independent of &tau; (flat on the log-log plot). Explain physically why averaging does not improve stability in this regime.</p>
+
+<h3 id="d3">D.3 Bayesian Parameter Estimation</h3>
+
+<h4>Exercise D.3.1</h4>
+<p>Consider N independent measurements of fractional frequency, y<sub>i</sub>, drawn from a Gaussian with unknown mean &mu; and known variance &sigma;&sup2;. Write down the likelihood, choose a conjugate Gaussian prior for &mu;, and derive the posterior analytically. Show that the posterior mean is a precision-weighted average of the prior mean and the sample mean.</p>
+
+<h4>Exercise D.3.2</h4>
+<p>Now suppose both &mu; and &sigma;&sup2; are unknown. Write down the joint likelihood. Argue why a Jeffreys prior p(&sigma;) &propto; 1/&sigma; is appropriate for the scale parameter. Show that the marginalised posterior for &mu; is a Student-t distribution. Discuss: what does the heavier tail of the Student-t imply for outlier sensitivity compared to the Gaussian case?</p>
+
+<h3 id="d4">D.4 From Pairwise Comparison to the &eta; Parameter</h3>
+
+<h4>Exercise D.4.1</h4>
+<p>Two clocks are separated by distance L. A phase comparison requires a signal round trip (or one-way with synchronisation). Show that the minimum comparison interval is T<sub>min</sub> = L/c (one-way) or T<sub>min</sub> = 2L/c (round trip). Define &eta;(&tau;) = L/(c&tau;) and argue that &eta;&nbsp;&le;&nbsp;1 is a necessary condition for a meaningful comparison.</p>
+
+<h4>Exercise D.4.2</h4>
+<p>For a clock with white frequency noise (S<sub>y</sub> = h<sub>0</sub>), the Allan deviation improves as &tau;<sup>&minus;1/2</sup> with averaging. But as &tau; increases, so does the accumulation of propagation noise on the comparison link. Model the link noise as white phase noise with amplitude h<sub>2,link</sub>. Derive the total comparison uncertainty &sigma;<sub>total</sub>(&tau;) = &sigma;<sub>clock</sub>(&tau;) &oplus; &sigma;<sub>link</sub>(&tau;) and find the &tau;<sub>opt</sub> that minimises it. Express &eta;<sub>opt</sub> = L/(c&tau;<sub>opt</sub>) in terms of h<sub>0</sub> and h<sub>2,link</sub>.</p>
+
+<h4>Exercise D.4.3</h4>
+<p>Interpret &eta;<sub>opt</sub> physically. Sketch the two competing contributions and their sum on a log-log plot. Explain: why is &eta;<sub>opt</sub> the falsifiable prediction of the causal-geometry framework?</p>
+
+<!-- ═══════ PART II: COMPUTATIONAL ═══════ -->
+
+<div class="part-divider" id="computational">
+<h2>Part II: Computational Exercises</h2>
+<p>Python implementations &mdash; validate your derivations numerically</p>
+</div>
+
+<h3 id="c1">C.1 Noise Generation</h3>
+<h4>Exercise C.1.1 &mdash; White Frequency Noise</h4>
+<p>Generate N = 10<sup>6</sup> samples of white frequency noise y[n] with amplitude h<sub>0</sub>. Compute the Allan deviation using the overlap estimator and verify the &tau;<sup>&minus;1/2</sup> slope.</p>
+<pre><code>import numpy as np
+
+def white_freq_noise(N, h0, dt=1.0):
+“”“Generate white frequency noise samples.”””
+sigma_y = np.sqrt(h0 / (2 * dt))
+return np.random.normal(0, sigma_y, N)
+
+# Your code: compute phase by cumulative sum, then Allan deviation</code></pre>
+
+<h4>Exercise C.1.2 &mdash; Power-Law Noise via Spectral Shaping</h4>
+<p>Generate flicker frequency noise (&alpha; = &minus;1) by filtering white noise in the frequency domain. Compare the resulting Allan deviation slope to your analytic prediction from D.2.3.</p>
+<pre><code>def power_law_noise(N, alpha, h_alpha, dt=1.0):
+    """Generate power-law noise S_y(f) = h_alpha * f^alpha
+       via spectral shaping of white noise."""
+    freqs = np.fft.rfftfreq(N, d=dt)
+    freqs[0] = freqs[1]  # avoid division by zero
+    # Shape the spectrum
+    white = np.fft.rfft(np.random.normal(0, 1, N))
+    shaped = white * np.sqrt(h_alpha * np.abs(freqs)**alpha * dt)
+    return np.fft.irfft(shaped, n=N)</code></pre>
+
+<h4>Exercise C.1.3 &mdash; Mixed Noise</h4>
+<p>Generate a time series with both white frequency and flicker frequency noise. Plot the Allan deviation and identify the crossover &tau; where the dominant noise type changes. Compare to the analytic prediction.</p>
+
+<h3 id="c2">C.2 Allan Deviation from Scratch</h3>
+<h4>Exercise C.2.1</h4>
+<p>Implement the non-overlapping Allan variance estimator directly from the phase time series &phi;[n]:</p>
+<pre><code>def allan_variance(phase, taus, dt=1.0):
+    """Compute non-overlapping Allan variance from phase data.
+
+```
+Parameters
+----------
+phase : array  - cumulative phase samples
+taus  : array  - averaging times to evaluate
+dt    : float  - sampling interval
+
+Returns
+-------
+adev : array - Allan deviation for each tau
+"""
+adev = np.zeros(len(taus))
+for i, tau in enumerate(taus):
+    n = int(tau / dt)
+    # Second differences of phase
+    diffs = phase[2*n::n] - 2*phase[n:-n:n] + phase[:-2*n:n]
+    adev[i] = np.sqrt(np.mean(diffs**2) / (2 * tau**2))
+return adev</code></pre>
+```
+
+<p>Test against <code>allantools.adev()</code> for each noise type. Quantify agreement.</p>
+
+<h3 id="c3">C.3 Bayesian Fitting</h3>
+<h4>Exercise C.3.1 &mdash; Frequency Offset Estimation</h4>
+<p>Generate 100 samples of fractional frequency from a clock with known offset &mu; = 1&times;10<sup>&minus;13</sup> and white frequency noise. Use MCMC to recover &mu; with a Gaussian prior. Compare the posterior width to the frequentist standard error.</p>
+<pre><code>import emcee
+
+def log_posterior(theta, data, prior_mu, prior_sigma, sigma_known):
+mu = theta[0]
+# Log-likelihood (Gaussian)
+ll = -0.5 * np.sum((data - mu)**2 / sigma_known**2)
+# Log-prior (Gaussian)
+lp = -0.5 * ((mu - prior_mu) / prior_sigma)**2
+return ll + lp
+
+# Your code: set up sampler, run chains, check convergence</code></pre>
+
+<h4>Exercise C.3.2 &mdash; Model Selection</h4>
+<p>Generate a dataset from white + flicker frequency noise. Fit two models: (1) pure white frequency, (2) white + flicker. Estimate the Bayes factor using the Savage-Dickey density ratio or thermodynamic integration. Which model is preferred, and by how much?</p>
+
+<h4>Exercise C.3.3 &mdash; Posterior Predictive Checks</h4>
+<p>From the posterior of C.3.2, generate 200 synthetic datasets. For each, compute the Allan deviation at &tau; = 1, 10, 100, 1000&nbsp;s. Plot the distribution of synthetic Allan deviations against the observed values. Does the posterior predictive distribution contain the observations?</p>
+
+<h3 id="c4">C.4 Comparison Network</h3>
+<h4>Exercise C.4.1 &mdash; Two-Clock Comparison</h4>
+<p>Simulate two clocks with different noise profiles. Add white phase noise on the comparison link. Compute the comparison Allan deviation &sigma;<sub>AB</sub>(&tau;) and identify &tau;<sub>opt</sub>. Calculate &eta;<sub>opt</sub> and compare to your derivation in D.4.2.</p>
+
+<h4>Exercise C.4.2 &mdash; Triangular Closure</h4>
+<p>Extend to three clocks. Compute all three pairwise comparisons and verify closure: y<sub>AB</sub> + y<sub>BC</sub> + y<sub>CA</sub> &rarr; 0. Inject a systematic offset on one link and show that the closure residual reveals it.</p>
+
+<h4>Exercise C.4.3 &mdash; The &eta; Landscape</h4>
+<p>For a three-clock network with varying separations, compute &eta;<sub>opt</sub> for each pair. Plot a map of &eta;<sub>opt</sub> vs L<sub>comparison</sub>. Overlay the analytic prediction from D.4.2. Discuss where the prediction breaks down and why.</p>
+
+<hr>
+
+<h2 id="submission">Submission</h2>
+<p>Bring your completed derivations (handwritten or typeset) and working Jupyter notebooks to the entrance session. Push notebooks to your fork of the <a href="https://github.com/adv-labs-ufr/numerical_clock_networks">repository</a> before the session.</p>
+
+<p>Continue to the <a href="lab.html">Lab</a> &rarr;</p>
+
+</div>
+<footer>
+  <div class="footer-inner">
+    Physikalisches Institut &middot; Universit&auml;t Freiburg &middot; Draft v0.1 &middot;
+    <a href="https://github.com/adv-labs-ufr/numerical_clock_networks">GitHub Repository</a> &middot;
+    <a href="rulebook.html">FP Rulebook</a>
+    <div class="footer-cd-note">Visual identity: Universit&auml;t Freiburg Corporate Design (cd.uni-freiburg.de) &middot; Feb 2023</div>
+  </div>
+</footer>
+</body>
+</html>
