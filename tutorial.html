@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -26,7 +25,6 @@
 <div class="callout callout-warning"><strong>Preparation standard:</strong> At the entrance session you will be asked to present your solutions and explain your reasoning. Understanding beats completeness &mdash; but you must be able to articulate what each step does and why.</div>
 
 <!-- ═══════ PART I: DERIVATIONS ═══════ -->
-
 <div class="part-divider" id="derivations">
 <h2>Part I: Derivation Scaffolds</h2>
 <p>Pen-and-paper work &mdash; from oscillator model to comparison geometry</p>
@@ -78,7 +76,6 @@
 <p>Interpret &eta;<sub>opt</sub> physically. Sketch the two competing contributions and their sum on a log-log plot. Explain: why is &eta;<sub>opt</sub> the falsifiable prediction of the causal-geometry framework?</p>
 
 <!-- ═══════ PART II: COMPUTATIONAL ═══════ -->
-
 <div class="part-divider" id="computational">
 <h2>Part II: Computational Exercises</h2>
 <p>Python implementations &mdash; validate your derivations numerically</p>
@@ -90,9 +87,9 @@
 <pre><code>import numpy as np
 
 def white_freq_noise(N, h0, dt=1.0):
-“”“Generate white frequency noise samples.”””
-sigma_y = np.sqrt(h0 / (2 * dt))
-return np.random.normal(0, sigma_y, N)
+    """Generate white frequency noise samples."""
+    sigma_y = np.sqrt(h0 / (2 * dt))
+    return np.random.normal(0, sigma_y, N)
 
 # Your code: compute phase by cumulative sum, then Allan deviation</code></pre>
 
@@ -116,27 +113,24 @@ return np.random.normal(0, sigma_y, N)
 <p>Implement the non-overlapping Allan variance estimator directly from the phase time series &phi;[n]:</p>
 <pre><code>def allan_variance(phase, taus, dt=1.0):
     """Compute non-overlapping Allan variance from phase data.
-
-```
-Parameters
-----------
-phase : array  - cumulative phase samples
-taus  : array  - averaging times to evaluate
-dt    : float  - sampling interval
-
-Returns
--------
-adev : array - Allan deviation for each tau
-"""
-adev = np.zeros(len(taus))
-for i, tau in enumerate(taus):
-    n = int(tau / dt)
-    # Second differences of phase
-    diffs = phase[2*n::n] - 2*phase[n:-n:n] + phase[:-2*n:n]
-    adev[i] = np.sqrt(np.mean(diffs**2) / (2 * tau**2))
-return adev</code></pre>
-```
-
+    
+    Parameters
+    ----------
+    phase : array  - cumulative phase samples
+    taus  : array  - averaging times to evaluate
+    dt    : float  - sampling interval
+    
+    Returns
+    -------
+    adev : array - Allan deviation for each tau
+    """
+    adev = np.zeros(len(taus))
+    for i, tau in enumerate(taus):
+        n = int(tau / dt)
+        # Second differences of phase
+        diffs = phase[2*n::n] - 2*phase[n:-n:n] + phase[:-2*n:n]
+        adev[i] = np.sqrt(np.mean(diffs**2) / (2 * tau**2))
+    return adev</code></pre>
 <p>Test against <code>allantools.adev()</code> for each noise type. Quantify agreement.</p>
 
 <h3 id="c3">C.3 Bayesian Fitting</h3>
@@ -145,12 +139,12 @@ return adev</code></pre>
 <pre><code>import emcee
 
 def log_posterior(theta, data, prior_mu, prior_sigma, sigma_known):
-mu = theta[0]
-# Log-likelihood (Gaussian)
-ll = -0.5 * np.sum((data - mu)**2 / sigma_known**2)
-# Log-prior (Gaussian)
-lp = -0.5 * ((mu - prior_mu) / prior_sigma)**2
-return ll + lp
+    mu = theta[0]
+    # Log-likelihood (Gaussian)
+    ll = -0.5 * np.sum((data - mu)**2 / sigma_known**2)
+    # Log-prior (Gaussian)
+    lp = -0.5 * ((mu - prior_mu) / prior_sigma)**2
+    return ll + lp
 
 # Your code: set up sampler, run chains, check convergence</code></pre>
 
